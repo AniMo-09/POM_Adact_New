@@ -1,4 +1,4 @@
- package com.adact.utilities;
+package com.adact.utilities;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,23 +16,23 @@ public class ReadExcelSheet
 	public static XSSFWorkbook workbook;
 	public static Object[][] obj=null;
 	public static String cellvalue;
-	
+
 	public static Object[][] readExcelSheet(String path)
 	{
-		
+
 		try 
 		{
 			fis=new FileInputStream(new File(path));
 			workbook=new XSSFWorkbook(fis);
 			XSSFSheet sheet = workbook.getSheet("testdata");
-			obj=new Object[sheet.getLastRowNum()-2][sheet.getRow(0).getLastCellNum()];
-			for (int i = 1; i < sheet.getLastRowNum(); i++) 
+			obj=new Object[sheet.getPhysicalNumberOfRows()-1][sheet.getRow(0).getPhysicalNumberOfCells()];
+			for (int i = 0; i < sheet.getLastRowNum(); i++) 
 			{
-				XSSFRow row = sheet.getRow(i);
+				XSSFRow row = sheet.getRow(i+1);
 				for (int j = 0; j < row.getLastCellNum(); j++) 
 				{
 					XSSFCell cell = row.getCell(j);
-//					String stringCellValue = cell.getStringCellValue();
+					//					String stringCellValue = cell.getStringCellValue();
 					if(cell.getCellType()==CellType.STRING)
 					{
 						cellvalue=cell.getStringCellValue();
@@ -42,7 +42,7 @@ public class ReadExcelSheet
 						long num=(long)cell.getNumericCellValue();
 						cellvalue=String.valueOf(num);
 					}
-					obj[i-1][j]=cellvalue;
+					obj[i][j]=cellvalue;
 					System.out.println(cellvalue);
 				}	
 			}
@@ -53,9 +53,9 @@ public class ReadExcelSheet
 		}
 		return obj;
 	}
-	
-//	public static void main(String[] args)
-//	{
-//		ReadExcelSheet.readExcelSheet(System.getProperty("user.dir")+"\\src\\main\\java\\com\\adact\\excel\\testdata.xlsx");
-//	}
+
+	//	public static void main(String[] args)
+	//	{
+	//		ReadExcelSheet.readExcelSheet(System.getProperty("user.dir")+"\\src\\main\\java\\com\\adact\\excel\\testdata.xlsx");
+	//	}
 }
